@@ -1,24 +1,38 @@
 import logo from './logo.svg';
 import './App.css';
+import NavBar from './components/NavBar';
+import Home from './components/Home';
+import AddVehicle from './components/AddVehicle';
+import LogMaintenance from './components/LogMaintenance';
+import ViewMaintenance from './components/ViewMaintenance';
+import ViewVehicles from './components/ViewVehicles';
 
 function App() {
+  let screen
+  switch (window.location.pathname){
+    case "/":
+      screen = <Home />
+      break;
+    case "/add-vehicles":
+      screen = <AddVehicle />
+      break;
+    case "/view-vehicles":
+      screen = <ViewVehicles />
+      break;
+    case "/log-maintenance":
+      screen = <LogMaintenance />
+      break;
+    case "/view-maintenance-log":
+      screen = <ViewMaintenance />
+      break;
+    default:
+      break;
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <NavBar />
+      {screen}
+    </>
   );
 }
 
