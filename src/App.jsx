@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
-import NavBar from './components/NavBar';
+import SideBar from './components/SideBar';
+import Title from './components/Title';
 import Home from './components/Home';
 import AddVehicle from './components/AddVehicle';
 import LogMaintenance from './components/LogMaintenance';
@@ -30,7 +31,8 @@ function App() {
   }
   return (
     <>
-      <NavBar />
+      <SideBar />
+      <Title />
       {screen}
     </>
   );
