@@ -22,22 +22,28 @@ export default function AddVehicle() {
         let car_model = document.getElementById('carmodel').value;
         let license_plate = document.getElementById('licenseplate').value;
 
-        if(window.confirm("Are you sure you want to submit?")){
-            console.log("vehicle added");
-            console.log("year ", car_year);
-            console.log("make ", car_make);
-            console.log("model", car_model);
-            console.log("license plate ", license_plate);
-
-            // clear text boxes
-            document.getElementById('caryear').value = '';
-            document.getElementById('carmake').value = '';
-            document.getElementById('carmodel').value = '';
-            document.getElementById('licenseplate').value = '';
+        if ((car_year.length > 0 && car_make.length > 0 && car_model.length > 0 && license_plate.length > 0)){
+            if(window.confirm("Are you sure you want to submit?")){
+                console.log("vehicle added");
+                console.log("year ", car_year);
+                console.log("make ", car_make);
+                console.log("model", car_model);
+                console.log("license plate ", license_plate);
+    
+                // clear text boxes
+                document.getElementById('caryear').value = '';
+                document.getElementById('carmake').value = '';
+                document.getElementById('carmodel').value = '';
+                document.getElementById('licenseplate').value = '';
+            }
+            else{
+                window.alert("You pressed cancel, vehicle not added.");
+            }
         }
         else{
-            console.log("You pressed cancel, vehicle not added.");
+            window.alert("Missing input value(s).");
         }
+
     }
 
     return (
@@ -55,7 +61,9 @@ export default function AddVehicle() {
                     <input type="text" id="licenseplate" className = 'input-borders text-black' maxLength={8}></input>  
                 </div>
                 
-                <button className="text-3xl ml-9 hover:shadow hover:bg-blue-500" onClick={handleAddVehicle}>ADD VEHICLE</button>
+                <button className="bg-[#a48c6c] ring ring-[##a48c6c] ring-offset-4 rounded-2xl text-3xl ml-9 my-2 hover:shadow hover:bg-blue-500" onClick={handleAddVehicle}>
+                    <label className="">Add Vehicle</label>
+                </button>
 
             </div>
         </div>
