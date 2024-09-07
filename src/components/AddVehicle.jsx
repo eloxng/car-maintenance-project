@@ -47,7 +47,7 @@ export default function AddVehicle() {
     }
 
     return (
-        <div className="fixed bg-[#cdb087] px-4 py-3 ml-64 h-screen w-screen">
+        <div className="relative bg-[#cdb087] px-4 py-2 ml-64 h-screen w-screen">
             <div className="text-2x text-white font-bold">
                 <div className="text-2xl">ENTER VEHICLE DATA:</div>          
                 <div className="grid grid-cols-2 gap-2 w-64 font-semibold">
