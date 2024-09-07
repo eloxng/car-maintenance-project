@@ -2,9 +2,9 @@ import React from "react";
 
 const SideBar = () => {
   return (
-    <div className="w-64 bg-[#865d35] fixed h-full px-4 py-2">
+    <div className="absolute w-64 bg-[#865d35] h-screen px-4 py-2">
       <div className="my-2 mb-4">
-        <h1 className="text-2x text-white font-bold">Options</h1>
+        <h1 className="text-2x text-white font-bold">Car Maintenance Logger</h1>
       </div>
       <hr />
       <ul className="mt-3 text-white font-bold">

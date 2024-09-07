@@ -1,7 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
 import SideBar from './components/SideBar';
-import Title from './components/Title';
 import Home from './components/Home';
 import AddVehicle from './components/AddVehicle';
 import LogMaintenance from './components/LogMaintenance';
@@ -32,7 +31,6 @@ function App() {
   return (
     <>
       <SideBar />
-      <Title />
       {screen}
     </>
   );

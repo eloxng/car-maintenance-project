@@ -2,8 +2,8 @@ import React from "react";
 
 const Home = () => {
     return (
-        <div className="fixed bg-[#cdb087] px-4 py-3 ml-64 h-screen w-screen">
-            <div className="text-2x text-white font-semibold absolute"> 
+        <div className="relative bg-[#cdb087] px-4 py-2 ml-64 h-screen w-screen">
+            <div className="text-2x text-white font-semibold"> 
                 <div> 
                 1) The purpose of this website is to log all of the 
                 maintenance done on your personal vehicles.
