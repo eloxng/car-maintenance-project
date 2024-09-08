@@ -24,23 +24,35 @@ export default function AddVehicle() {
 
         if ((car_year.length > 0 && car_make.length > 0 && car_model.length > 0 && license_plate.length > 0)){
             if(window.confirm("Are you sure you want to submit?")){
-                console.log("vehicle added");
-                console.log("year ", car_year);
-                console.log("make ", car_make);
-                console.log("model", car_model);
-                console.log("license plate ", license_plate);
-    
-                // clear text boxes
-                document.getElementById('caryear').value = '';
-                document.getElementById('carmake').value = '';
-                document.getElementById('carmodel').value = '';
-                document.getElementById('licenseplate').value = '';
-            }
-            else{
+                // POST vehicle data into backend
+                fetch('/api/addvehicles', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        car_year,
+                        car_make,
+                        car_model,
+                        license_plate,
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Vehicle added:", data);
+                    // clear text boxes
+                    document.getElementById('caryear').value = '';
+                    document.getElementById('carmake').value = '';
+                    document.getElementById('carmodel').value = '';
+                    document.getElementById('licenseplate').value = '';
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+            } else {
                 window.alert("You pressed cancel, vehicle not added.");
             }
-        }
-        else{
+        } else {
             window.alert("Missing input value(s).");
         }
 
