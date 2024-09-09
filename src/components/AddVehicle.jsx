@@ -10,7 +10,7 @@ export default function AddVehicle() {
     }
 
     // allow only letters (capital and lowercase) to be typed
-    const handleMakeModelKeyPress = (event) => {
+    const handleMakeKeyPress = (event) => {
         const charCode = event.charCode;
         if(!((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || (charCode === 32))) // a-z, A-Z, space
             event.preventDefault(); // prevent character from being typed
@@ -66,9 +66,9 @@ export default function AddVehicle() {
                     <label>Year: </label>
                     <input type="text" id="caryear" className = 'input-borders text-black' onKeyPress={handleYearKeyPress} maxLength={4}></input>  
                     <label>Make: </label>
-                    <input type="text" id="carmake" className = 'input-borders text-black' onKeyPress={handleMakeModelKeyPress} maxLength={20}></input>  
+                    <input type="text" id="carmake" className = 'input-borders text-black' onKeyPress={handleMakeKeyPress} maxLength={20}></input>  
                     <label>Model: </label>
-                    <input type="text" id="carmodel" className = 'input-borders text-black' onKeyPress={handleMakeModelKeyPress} maxLength={50}></input>  
+                    <input type="text" id="carmodel" className = 'input-borders text-black' maxLength={50}></input>  
                     <label>License Plate: </label>
                     <input type="text" id="licenseplate" className = 'input-borders text-black' maxLength={8}></input>  
                 </div>

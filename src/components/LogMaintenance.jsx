@@ -1,6 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 export default function LogMaintenance() {
+    let api = "/api/getvehicles"
+    const [vehicles, setVehicles] = useState([])   
+    // get vehicle data
+    useEffect(() => {
+            // GET vehicle data from backend
+           fetch(api)
+           .then(response => {
+               if(!response.ok)
+                   throw new Error("Couldn't find vehicle");
+               return response.json();
+           })
+           .then(calldata => {
+                setVehicles(calldata.data);
+            })
+            .catch(err => {console.error(err)})
+    }, [])
 
     // allow only numbers to be typed
     const handleOdoReadingKP = (event) => {
@@ -34,18 +50,33 @@ export default function LogMaintenance() {
             // if there's an odo reading, if odo units chosen, and if date is completely typed
             if(odoreading.length > 0 && odounits != "--select an option--" && date.length == 10)
             {
-                // log data into db "console.log() substitute"
-                console.log(car)
-                console.log(odoreading)
-                console.log(odounits)
-                console.log(date)
-                console.log(mdesc)
-                // clear inputs
-                document.getElementById('car').value = '';
-                document.getElementById('odoreading').value = '';
-                document.getElementById('odounits').value = '';
-                document.getElementById('date').value = '';
-                document.getElementById('mdesc').value = '';
+                // log data into db
+                fetch('/api/addlog', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        car,
+                        odoreading,
+                        odounits,
+                        date,
+                        mdesc
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Maintenance Added: ", data)                             
+                    // clear inputs
+                    document.getElementById('car').value = '';
+                    document.getElementById('odoreading').value = '';
+                    document.getElementById('odounits').value = '';
+                    document.getElementById('date').value = '';
+                    document.getElementById('mdesc').value = '';
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
             }
             else
                 window.alert("missing values")
@@ -63,7 +94,13 @@ export default function LogMaintenance() {
                 <br></br>
                 <div className="text-lg font-semibold grid grid-cols-1 gap-2 w-60">
                     <label>Select Car: </label>
-                    <select id="car" className="bg-[#a48c6c]"></select>
+                    <select id="car" className="bg-[#a48c6c]">
+                            {vehicles.map((vehicle, index) => (
+                                <option id={vehicle.v_id} key={index}>
+                                    {vehicle.year} {vehicle.make} {vehicle.model} - <strong>{vehicle.lplate}</strong>
+                                </option>
+                            ))}
+                    </select>
 
                     <label>Odometer Reading: </label>
                     <input id="odoreading" type="text" className="text-black" onKeyPress={handleOdoReadingKP}></input>

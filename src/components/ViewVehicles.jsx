@@ -1,12 +1,44 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 export default function ViewVehicles () {
+    let api = "/api/getvehicles"
+    const [vehicles, setVehicles] = useState([])   
+    // get vehicle data
+    useEffect(() => {
+            // GET vehicle data from backend
+           fetch(api)
+           .then(response => {
+               if(!response.ok)
+                   throw new Error("Couldn't find vehicle");
+               return response.json();
+           })
+           .then(data => {
+                // Extract the data array from the response object
+                const vehicles = data.data;
+       
+                // Map through the array to extract only the desired fields
+                const filteredData = vehicles.map(vehicle => {
+                    const { year, make, model, lplate } = vehicle;
+                    return { year, make, model, lplate };
+                });     
+                setVehicles(filteredData);
+            })
+            .catch(err => {console.error(err)})
+    }, [])
+
     return (
-        <div className="relative bg-[#cdb087] px-4 py-2 ml-64 h-screen w-screen">
+        <div className="relative bg-[#cdb087] px-4 py-2 ml-64 h-screen">
             <div className="text-2x text-white font-semibold"> 
                 View Vehicles Page
-                <div className="text-black h-full bg-white border-x-2">
-                    
+                <div className="text-black h-full bg-white">
+                    <ul>
+                        {vehicles.map((vehicle, index) => (
+                            <li key={index}>
+                                {vehicle.year} {vehicle.make} {vehicle.model} <strong>{vehicle.lplate}</strong>
+                                <hr></hr>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </div>
         </div>
