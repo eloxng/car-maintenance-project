@@ -59,25 +59,30 @@ export default function AddVehicle() {
     }
 
     return (
-        <div className="relative bg-[#cdb087] px-4 py-2 ml-64 h-screen w-screen">
-            <div className="text-2x text-white font-bold">
-                <div className="text-2xl">ENTER VEHICLE DATA:</div>          
-                <div className="grid grid-cols-2 gap-2 w-64 font-semibold">
-                    <label>Year: </label>
-                    <input type="text" id="caryear" className = 'input-borders text-black' onKeyPress={handleYearKeyPress} maxLength={4}></input>  
-                    <label>Make: </label>
-                    <input type="text" id="carmake" className = 'input-borders text-black' onKeyPress={handleMakeKeyPress} maxLength={20}></input>  
-                    <label>Model: </label>
-                    <input type="text" id="carmodel" className = 'input-borders text-black' maxLength={50}></input>  
-                    <label>License Plate: </label>
-                    <input type="text" id="licenseplate" className = 'input-borders text-black' maxLength={8}></input>  
-                </div>
-                
+        <div className="relative bg-[#cdb087] px-4 py-2 ml-64 h-screen">
+            <div className="text-3xl text-white font-bold">
+                Add Vehicle  
+            </div>
+            <br></br>   
+            <br></br>
+            <div className="grid grid-cols-2 gap-7 text-2xl font-semibold w-fit">
+                <label className="relative bg-[#cdb087] text-white">Year: </label>
+                <input type="text" id="caryear" onKeyPress={handleYearKeyPress} maxLength={4}></input>
+                <label className="relative bg-[#cdb087] text-white">Make: </label>
+                <input type="text" id="carmake" onKeyPress={handleMakeKeyPress} maxLength={20}></input>  
+                <label className="relative bg-[#cdb087] text-white">Model: </label>
+                <input type="text" id="carmodel" maxLength={50}></input>  
+                <label className="relative bg-[#cdb087] text-white">License Plate: </label>
+                <input type="text" id="licenseplate"  maxLength={8}></input>  
+            </div>  
+            <br></br>        
+            <div className="text-white font-bold">
                 <button className="bg-[#a48c6c] ring ring-[##a48c6c] ring-offset-4 rounded-2xl text-3xl ml-9 my-2 hover:shadow hover:bg-blue-500" onClick={handleAddVehicle}>
                     <label className="">Add Vehicle</label>
                 </button>
-
             </div>
+
+
         </div>
     )
 }

@@ -28,17 +28,22 @@ export default function ViewVehicles () {
 
     return (
         <div className="relative bg-[#cdb087] px-4 py-2 ml-64 h-screen">
-            <div className="text-2x text-white font-semibold"> 
-                View Vehicles Page
-                <div className="text-black h-full bg-white">
-                    <ul>
-                        {vehicles.map((vehicle, index) => (
-                            <li key={index}>
-                                {vehicle.year} {vehicle.make} {vehicle.model} <strong>{vehicle.lplate}</strong>
-                                <hr></hr>
-                            </li>
-                        ))}
-                    </ul>
+            <div className="text-3xl text-white font-bold"> 
+                View Vehicles
+            </div>
+            <br></br>
+            <br></br>
+
+            <div className="h-fit">
+                <div className="bg-white text-black text-2xl w-fit px-2">
+                        <ul>
+                            {vehicles.map((vehicle, index) => (
+                                <li key={index}>
+                                    <strong>{vehicle.lplate}</strong> - {vehicle.year} {vehicle.make} {vehicle.model}
+                                    <hr></hr>
+                                </li>
+                            ))}
+                        </ul>
                 </div>
             </div>
         </div>

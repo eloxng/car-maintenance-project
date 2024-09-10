@@ -30,8 +30,8 @@ function App() {
   }
   return (
     <>
-      <SideBar />
-      {screen}
+        <SideBar />
+        {screen}
     </>
   );
 }
