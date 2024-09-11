@@ -10,7 +10,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
         <ul className='pagination flex gap-5 py-6 text-lg font-semibold'>
             {pageNumbers.map(number => (
                 <li key={number} className='page-item' >
-                    <a onClick={(e) => {e.preventDefault(); paginate(number);}} href='' className="page-link px-4 py-2 border-2 rounded text-white hover:bg-blue-500">
+                    <a onClick={(e) => {e.preventDefault(); paginate(number);}} href='/!#' className="page-link px-4 py-2 border-2 rounded text-white hover:bg-blue-500">
                         {number}
                     </a>
                 </li>

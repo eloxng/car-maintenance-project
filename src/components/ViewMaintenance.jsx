@@ -1,67 +1,71 @@
 import React, { useState, useEffect } from "react";
-import PageLogs from './functions/PageLogs'
-import Pagination from './functions/Pagination'
+import PageLogs from './functions/PageLogs';
+import Pagination from './functions/Pagination';
+import PostsPerPage from './functions/PostsPerPage';
 
 export default function ViewMaintenance() {
-    // For pulling vehicles
+    // For getting vehicles from db and setting their ID's
     const [vehicles, setVehicles] = useState([]);
-    const [vehicleID, setVehicleID] = useState('');
+    const [vehicleID, setVehicleID] = useState([]);
     // For pagination
     const [logs, setLogs] = useState([]);  
     const [loading, setLoading] = useState(false);
+    // Get current posts per page
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage] = useState(6);
-    // Get current logs per page
-    const indexOfLastLogPost = currentPage * postsPerPage;
-    const indexOfFirstLogPost = indexOfLastLogPost - postsPerPage;
-    const currentLogs = logs.slice(indexOfFirstLogPost, indexOfLastLogPost);
-    // Change page
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
     // Set vehicle ID for const vehicleID
-    const getVehicleId = (v_id) => {setVehicleID(v_id);}
-
-    // Get vehicle data
+    const LogsPerPage = PostsPerPage(logs, currentPage, setCurrentPage, postsPerPage);
+    const currentLogs = LogsPerPage[0];
+    const paginater = LogsPerPage[1];
+    // Handle vehicle selection
+    const handleVehicleChange = (e) => {
+        setVehicleID(e.target.value);
+    };
+    
+    // GET vehicle data from backend
     useEffect(() => {
-            // GET vehicle data from backend
-           fetch('/api/getvehicles')
-           .then(response => {
-               if(!response.ok)
+        setLoading(true); 
+            fetch('/api/getvehicles')
+            .then(response => {
+                if(!response.ok)
                    throw new Error("Couldn't find vehicle");
-               return response.json();
-           })
-           .then(calldata => {
+                return response.json();
+            })
+            .then(calldata => {
                 setVehicles(calldata.data);
             })
         .catch(err => {console.error(err)})
+        .finally(() => setLoading(false)); 
     }, [])
 
     // Get maintenance logs
     useEffect(() => {
-        const fetchPosts = () => {
+        const fetchPosts = () => { 
             setLoading(true);           
-            // GET call to api
-            fetch(`/api/getlogsbyid/${vehicleID}`)
-            .then(response => {
-                if(!response.ok)
-                    throw new Error("Couldn't find logs");
-                return response.json();
-            })
-            .then(calldata => {
-                const logs = calldata.data;
-                const filteredData = logs.map(log => {
-                    const { v_id, l_id, odoreading, odounits, date, mdesc } = log;
-                    return { v_id, l_id, odoreading, odounits, date, mdesc };
+                // GET call to api
+                fetch(`/api/getlogsbyid/${vehicleID}`)
+                .then(response => {
+                    if(!response.ok)
+                        throw new Error("Couldn't find logs");
+                    return response.json();
                 })
-                setLogs(filteredData);
-            })
-            .catch(err => {console.error(err)})
-            setLoading(false);
-        }
+                .then(data => {
+                    const logs = data.data;
+                    const filteredData = logs.map(log => {
+                        const { v_id, l_id, odoreading, odounits, date, mdesc } = log;
+                        return { v_id, l_id, odoreading, odounits, date, mdesc };
+                    })
+                    setLogs(filteredData);
+                })
+                .catch(err => {console.error(err)})
+                .finally(() => setLoading(false));
+            }
         fetchPosts();
     }, [vehicleID])
 
+
     return (
-        <div className="absolute bg-[#cdb087] px-4 py-2 ml-64 h-fit w-screen">
+        <div className="absolute bg-[#cdb087] px-4 py-2 ml-64 h-screen w-screen">
             <div className="text-3xl text-white font-bold"> 
                 View Maintenance Log Page
             </div>
@@ -70,10 +74,11 @@ export default function ViewMaintenance() {
             {/*Select Car*/}
             <div className="text-2xl text-white font-semibold">             
                 <label>Select Car: </label>
-                    <select id="car" className="bg-[#a48c6c]">
+                    {/*onChange*/}
+                    <select id="car" className="bg-[#a48c6c]" onChange={handleVehicleChange}>
                         <option value="">select an option</option>
                             {vehicles.map((vehicle) => (
-                                <option id="vehicleid" onClick={() => getVehicleId(vehicle.v_id)} value={vehicle.v_id}>
+                                <option key={vehicle.v_id} value={vehicle.v_id}>
                                     {vehicle.v_id}: {vehicle.year} {vehicle.make} {vehicle.model} - <strong>{vehicle.lplate}</strong>
                                 </option>
                             ))}
@@ -85,7 +90,7 @@ export default function ViewMaintenance() {
             <div>
                 <PageLogs logs={currentLogs} loading={loading} ></PageLogs>
                 <br></br>
-                <Pagination postsPerPage={postsPerPage} totalPosts={logs.length} paginate={paginate}></Pagination>
+                <Pagination postsPerPage={postsPerPage} totalPosts={logs.length} paginate={paginater}></Pagination>
             </div>              
         </div>
     )
