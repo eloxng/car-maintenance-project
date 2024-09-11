@@ -59,7 +59,7 @@ export default function AddVehicle() {
     }
 
     return (
-        <div className="relative bg-[#cdb087] px-4 py-2 ml-64 h-screen">
+        <div className="absolute bg-[#cdb087] px-4 py-2 ml-64 h-screen w-screen">
             <div className="text-3xl text-white font-bold">
                 Add Vehicle  
             </div>

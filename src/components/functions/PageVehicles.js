@@ -9,10 +9,10 @@ const PageVehicles = ({vehicles, loading}) => {
         <div className="bg-white text-black text-2xl w-fit px-2">
             <ul>
                 {vehicles.map((vehicle) => (
-                    <li key={vehicle.v_id}>
-                        <strong>{vehicle.lplate}</strong> - {vehicle.year} {vehicle.make} {vehicle.model}
+                    <option key={vehicle.v_id}>
+                        <strong>{vehicle.lplate}</strong>:  {vehicle.year} {vehicle.make} {vehicle.model}
                         <hr></hr>
-                    </li>
+                    </option>
                 ))}
             </ul>
         </div>

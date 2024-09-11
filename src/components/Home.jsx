@@ -2,13 +2,13 @@ import React from "react";
 
 export default function Home() {
     return (
-        <div className="relative bg-[#cdb087] px-4 py-2 ml-64 h-screen">
+        <div className="absolute bg-[#cdb087] px-4 py-2 ml-64 h-screen w-screen">
             <div className="text-3xl text-white font-bold">
                 Home Page
             </div>
             <br></br>
             <br></br>
-            <div className="text-2xl text-white font-semibold"> 
+            <div className="text-lg text-white font-semibold w-fit h-fi"> 
                 <ul className="grid gap-10"> 
                     <div>Log all of the maintenance done on your personal vehicles digitally.</div>
                     <div>

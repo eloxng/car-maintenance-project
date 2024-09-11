@@ -7,7 +7,7 @@ export default function ViewVehicles () {
     const [vehicles, setVehicles] = useState([])
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostsPerPage] = useState(15);  
+    const [postsPerPage] = useState(15);  
 
     // GET vehicle data from backend
     useEffect(() => {
@@ -20,14 +20,8 @@ export default function ViewVehicles () {
            })
            .then(data => {
                 // Extract the data array from the response object
-                const vehicles = data.data;
-       
-                // Map through the array to extract only the desired fields
-                const filteredData = vehicles.map(vehicle => {
-                    const { year, make, model, lplate } = vehicle;
-                    return { year, make, model, lplate };
-                });     
-                setVehicles(filteredData);
+                const vehicles = data.data;   
+                setVehicles(vehicles);
             })
             .catch(err => {console.error(err)})
             setLoading(false);
@@ -42,7 +36,7 @@ export default function ViewVehicles () {
     const paginate = (pageNumber) => setCurrentPage(pageNumber)
 
     return (
-        <div className="relative bg-[#cdb087] px-4 py-2 ml-64 h-screen">
+        <div className="relative bg-[#cdb087] px-4 py-2 ml-64 h-screen w-screen">
             <div className="text-3xl text-white font-bold"> 
                 View Vehicles
             </div>
