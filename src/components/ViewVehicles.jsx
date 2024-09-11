@@ -24,7 +24,7 @@ export default function ViewVehicles () {
                 setVehicles(filteredData);
             })
             .catch(err => {console.error(err)})
-    }, [])
+    })
 
     return (
         <div className="relative bg-[#cdb087] px-4 py-2 ml-64 h-screen">

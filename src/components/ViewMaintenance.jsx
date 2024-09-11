@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from "react";
+import PostLogs from './functions/PostLogs'
+import Pagination from './functions/Pagination'
 
 export default function ViewMaintenance() {
-    const [vehicles, setVehicles] = useState([]) 
-    const [logs, setLogs] = useState([])  
+    // For pulling vehicles
+    const [vehicles, setVehicles] = useState([]);
 
-    // get vehicle data
+    // For pagination
+    const [logs, setLogs] = useState([]);  
+    const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage, setPostsPerPage] = useState(6);
+
+    // Get vehicle data
     useEffect(() => {
             // GET vehicle data from backend
            fetch('/api/getvehicles')
@@ -16,29 +24,42 @@ export default function ViewMaintenance() {
            .then(calldata => {
                 setVehicles(calldata.data);
             })
-            .catch(err => {console.error(err)})
-    }, [])
-
-    // get maintenance logs
-    useEffect(() => {
-        // GET call to api
-        fetch('/api/getlogs')
-        .then(response => {
-            if(!response.ok)
-                throw new Error("Couldn't find logs");
-            return response.json();
-        })
-        .then(calldata => {
-            const logs = calldata.data;
-            const filteredData = logs.map(log => {
-                const { v_id, l_id, odoreading, odounits, date, desc } = log;
-                return { v_id, l_id, odoreading, odounits, date, desc };
-            })
-            setLogs(filteredData);
-        })
         .catch(err => {console.error(err)})
     }, [])
 
+    // Get maintenance logs
+    useEffect(() => {
+        const fetchPosts = () => {
+            setLoading(true);           
+            // GET call to api
+            fetch('/api/getlogs')
+            .then(response => {
+                if(!response.ok)
+                    throw new Error("Couldn't find logs");
+                return response.json();
+            })
+            .then(calldata => {
+                const logs = calldata.data;
+                const filteredData = logs.map(log => {
+                    const { v_id, l_id, odoreading, odounits, date, desc } = log;
+                    return { v_id, l_id, odoreading, odounits, date, desc };
+                })
+                setLogs(filteredData);
+                setLoading(false);
+            })
+            .catch(err => {console.error(err)})
+        }
+
+        fetchPosts();
+    }, [])
+
+    // Get current logs
+    const indexOfLastLogPost = currentPage * postsPerPage;
+    const indexOfFirstLogPost = indexOfLastLogPost - postsPerPage;
+    const currentLogs = logs.slice(indexOfFirstLogPost, indexOfLastLogPost);
+
+    // Change page
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
         <div className="relative bg-[#cdb087] px-4 py-2 ml-64 h-screen">
@@ -64,21 +85,10 @@ export default function ViewMaintenance() {
                     <label className="">View Maintenance Log</label>
                 </button>
             </div>                            
-
-            <div className="grid">                   
-                <div className="bg-white text-black text-2xl w-fit px-3 p">
-                    {logs.map((log, index) => (
-                        <ul>
-                            <strong>Log ID: </strong>{log.l_id}<br></br>
-                            <strong>Mileage: </strong>{log.odoreading} {log.odounits} <br></br>
-                            <strong>Date: </strong>{log.date} <br></br>
-                            <strong>Maintenance Description:</strong> <br></br>
-                            {log.desc}
-                            <hr></hr>
-                        </ul>
-                    ))}
-                </div>
-            </div> 
+            {/*Paginating maitenance logs*/}                        
+            <PostLogs className='grid grid-cols-2' logs={currentLogs} loading={loading}></PostLogs>
+            <Pagination postsPerPage={postsPerPage} totalPosts={logs.length} paginate={paginate}></Pagination>
         </div>
+        
     )
 }
