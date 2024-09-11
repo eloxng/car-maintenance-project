@@ -1,9 +1,9 @@
-// View Maintenance Logs - Pagination
+// View Maintenance Logs Paging
 import React from 'react'
 
-const PostLogs = ({ logs, loading }) => {
+const PageLogs = ({ logs, loading }) => {
     if(loading){
-        return <h2>Loading...</h2>
+        return <h2>Loading maintenance logs...</h2>
     }
     return (     
                 <div className="bg-white text-lg/[20px] text-black text w-fit px-3">
@@ -21,4 +21,4 @@ const PostLogs = ({ logs, loading }) => {
     )      
 }
 
-export default PostLogs;
+export default PageLogs;

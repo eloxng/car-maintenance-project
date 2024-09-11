@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import PostLogs from './functions/PostLogs'
+import PageLogs from './functions/PageLogs'
 import Pagination from './functions/Pagination'
 
 export default function ViewMaintenance() {
@@ -45,9 +45,9 @@ export default function ViewMaintenance() {
                     return { v_id, l_id, odoreading, odounits, date, desc };
                 })
                 setLogs(filteredData);
-                setLoading(false);
             })
             .catch(err => {console.error(err)})
+            setLoading(false);
         }
 
         fetchPosts();
@@ -86,9 +86,8 @@ export default function ViewMaintenance() {
                 </button>
             </div>                            
             {/*Paginating maitenance logs*/}                        
-            <PostLogs className='grid grid-cols-2' logs={currentLogs} loading={loading}></PostLogs>
+            <PageLogs className='grid grid-cols-2' logs={currentLogs} loading={loading}></PageLogs>
             <Pagination postsPerPage={postsPerPage} totalPosts={logs.length} paginate={paginate}></Pagination>
         </div>
-        
     )
 }
