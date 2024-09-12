@@ -25,7 +25,7 @@ export default function AddVehicle() {
         if ((car_year.length > 0 && car_make.length > 0 && car_model.length > 0 && license_plate.length > 0)){
             if(window.confirm("Are you sure you want to submit?")){
                 // POST vehicle data into backend
-                fetch('/api/addvehicles', {
+                fetch(process.env.REACT_APP_ADD_VEHICLE_API, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

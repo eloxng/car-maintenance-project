@@ -25,7 +25,7 @@ export default function ViewMaintenance() {
     // GET vehicle data from backend
     useEffect(() => {
         setLoading(true); 
-            fetch('/api/getvehicles')
+            fetch(process.env.REACT_APP_GET_VEHICLE_API)
             .then(response => {
                 if(!response.ok)
                    throw new Error("Couldn't find vehicle");
@@ -43,7 +43,7 @@ export default function ViewMaintenance() {
         const fetchPosts = () => { 
             setLoading(true);           
                 // GET call to api
-                fetch(`/api/getlogsbyid/${vehicleID}`)
+                fetch(`${process.env.REACT_APP_GET_LOG_BY_VEHICLE_ID_API}${vehicleID}`)
                 .then(response => {
                     if(!response.ok)
                         throw new Error("Couldn't find logs");

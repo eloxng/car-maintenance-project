@@ -8,9 +8,11 @@ const SideBar = () => {
       </div>
       
       <ul className="mt-3 text-white font-bold h-fit w-fit">
-        <li className='mb-2 rounded hover:shadow hover:bg-blue-500 py-2'>
-          <a href='/' className="px-3">Home</a>
+        {/* Add conditional rendering here when accounts database is setup */}
+        <li className='mb-2 rounded hover:shadow hover:bg-red-500 py-2'>
+          <a href='/' className="px-3">Manage Account Data</a>
         </li>
+        {/******************************************************************/}
         <li className='mb-2 rounded hover:shadow hover:bg-blue-500 py-2'>
           <a href='/add-vehicles' className="px-3">Add Vehicles</a>
         </li>

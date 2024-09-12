@@ -17,7 +17,7 @@ export default function ViewVehicles () {
     // Get vehicle data from backend
     useEffect(() => {
         setLoading(true);
-        fetch('/api/getvehicles')
+        fetch(process.env.REACT_APP_GET_VEHICLE_API)
             .then(response => {
                 if(!response.ok)
                     throw new Error("Couldn't find vehicle");
@@ -25,7 +25,6 @@ export default function ViewVehicles () {
             })
             .then(data => {
                 // Extract the data array from the response object
-                const vehicles = data.data;   
                 setVehicles(data.data);
             })
             .catch(err => console.error(err))

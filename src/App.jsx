@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import SideBar from './components/SideBar';
-import Home from './components/Home';
+import ManageAccountData from './components/ManagerAccountData';
 import AddVehicle from './components/AddVehicle';
 import LogMaintenance from './components/LogMaintenance';
 import ViewMaintenance from './components/ViewMaintenance';
@@ -11,7 +11,7 @@ function App() {
   let screen
   switch (window.location.pathname){
     case "/":
-      screen = <Home />
+      screen = <ManageAccountData />
       break;
     case "/add-vehicles":
       screen = <AddVehicle />
