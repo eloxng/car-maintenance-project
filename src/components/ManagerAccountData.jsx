@@ -3,10 +3,12 @@ import React from "react";
 export default function ManageAccountData() {
     const clearVehicles = () => {
         window.alert("Clear vehicles clicked.")
+        //ClearVehicles()
     }
 
     const clearLogs = () => {
         window.alert("Clear maintenance logs clicked.")
+        //ClearLog()
     }
 
     return (
