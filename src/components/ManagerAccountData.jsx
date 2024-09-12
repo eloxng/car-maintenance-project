@@ -1,14 +1,30 @@
 import React from "react";
 
 export default function ManageAccountData() {
-    const clearVehicles = () => {
-        window.alert("Clear vehicles clicked.")
-        //ClearVehicles()
-    }
-
-    const clearLogs = () => {
-        window.alert("Clear maintenance logs clicked.")
-        //ClearLog()
+    const wipeVehiclesAndLogs = async () => {
+        const deleteVehicles = () => {
+            fetch(process.env.REACT_APP_CLEAR_VEHICLES_API, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(response => console.log(response))
+            .catch((err) => console.error("Error:", err))
+        }
+        const deleteLogs = () => {
+            fetch(process.env.REACT_APP_CLEAR_LOGS_API, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(response => console.log(response))
+            .catch((err) => console.error("Error:", err))
+        }
+        if(window.confirm("Are you sure you want to wipe your vehicles and maintenance logs?")){
+            deleteVehicles();
+            deleteLogs();
+            window.alert("Wiped.")
+        }
+        else
+            window.alert("Canceled wipe.")
     }
 
     return (
@@ -19,19 +35,16 @@ export default function ManageAccountData() {
             <br></br>
             <br></br>
 
-            <ul className="grid grid-cols-2 gap-10 w-fit h-fit"> 
-                <li onClick={clearVehicles} className="rounded-lg hover:bg-red-700">
-                    <a className="flex items-center justify-center text text-white text-2xl font-bold">Clear Vehicles</a>
-                </li >
+            <ul className="grid grid-cols-1 gap-10 w-fit h-fit"> 
                 <li className="rounded-lg hover:bg-green-500">
                     <a className="flex items-center justify-center text text-white text-2xl font-bold">Reset username</a>
-                </li>
-                <li onClick={clearLogs} className="rounded-lg hover:bg-red-700">
-                    <a className="flex items-center justify-center text-center text text-white text-2xl font-bold">Clear Maintenance Logs</a>
                 </li>
                 <li className="rounded-lg hover:bg-green-500">
                     <a className="flex items-center justify-center text text-white text-2xl font-bold">Reset Password</a>
                 </li>
+                <li onClick={wipeVehiclesAndLogs} className="rounded-lg hover:bg-red-700">
+                    <a className="flex items-center justify-center text text-white text-2xl font-bold">Wipe All Vehicle and Log Data</a>
+                </li >
             </ul>
         </div>
     )
