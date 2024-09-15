@@ -73,7 +73,7 @@ export default function ViewMaintenance() {
             <br></br>
             <br></br>
             {/*Select Car*/}
-            <div className="text-2xl text-white font-semibold">             
+            <div className="grid grid-cols-2 text-2xl text-white font-semibold w-fit">             
                 <label>Select Car: </label>
                     {/*onChange*/}
                     <select id="car" className="bg-[#a48c6c]" onChange={handleVehicleChange}>

@@ -20,8 +20,8 @@ export default function ManageAccountData() {
             .catch((err) => console.error("Error:", err))
         }
         if(window.confirm("Are you sure you want to wipe your vehicles and maintenance logs?")){
-            deleteVehicles();
             deleteLogs();
+            deleteVehicles();
             window.alert("Wiped.")
         }
         else
