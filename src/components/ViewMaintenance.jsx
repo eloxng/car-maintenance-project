@@ -7,8 +7,9 @@ export default function ViewMaintenance() {
     // For getting vehicles from db and setting their ID's
     const [vehicles, setVehicles] = useState([]);
     const [vehicleID, setVehicleID] = useState([]);
-    // For pagination
-    const [logs, setLogs] = useState([]);  
+    // For getting the maintenance logs
+    const [logs, setLogs] = useState([]);
+
     const [loading, setLoading] = useState(false);
     // Get current posts per page
     const [currentPage, setCurrentPage] = useState(1);
@@ -76,7 +77,7 @@ export default function ViewMaintenance() {
                 <label>Select Car: </label>
                     {/*onChange*/}
                     <select id="car" className="bg-[#a48c6c]" onChange={handleVehicleChange}>
-                        <option value="">select an option</option>
+                        <option value="">Select an option</option>
                             {vehicles.map((vehicle) => (
                                 <option key={vehicle.v_id} value={vehicle.v_id}>
                                     {vehicle.v_id}: {vehicle.year} {vehicle.make} {vehicle.model} - <strong>{vehicle.lplate}</strong>
