@@ -1,6 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
+import AuthContext from "./context/AuthProvider";
+import axios from "axios";
 
 const SideBar = () => {
+  const { logout } = useContext(AuthContext);
+
+  const handleLogout = async () => {
+    try {
+      if(window.confirm("Are you sure you want to logout?")){
+        alert("Logging out.")
+        logout();
+      }
+      else
+        alert("Cancelled Logout.")
+    }
+    catch (error) {
+      console.error('Logout failed:', error);
+    }
+  }
+
   return (
     <div className="absolute bg-[#865d35] px-4 py-2 w-screen h-screen">
       <div className="my-2 mb-4">
@@ -25,6 +43,9 @@ const SideBar = () => {
         <li className='mb-2 rounded hover:shadow hover:bg-blue-500 py-2'>
           <a href='/view-maintenance-log' className="px-3">View Maintenance Log</a>
         </li>
+        <button className='mb-2 rounded hover:shadow hover:bg-red-900 py-2'>
+          <a onClick={handleLogout} className="logout-button px-3">Log out of account</a>
+        </button>
       </ul>
     </div>
   );
