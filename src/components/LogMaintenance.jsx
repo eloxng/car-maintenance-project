@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { handleDescKeyPress, handleDateKeyPress, handleOdoReadingKeyPress } from "./functions/InputHandling";
 
 export default function LogMaintenance() {
-    // Get vehicle data for dropdown
+    // For select car dropdown
     const [vehicles, setVehicles] = useState([]); 
+    const getvehicle_url = process.env.REACT_APP_GET_VEHICLE_API;
     useEffect(() => {
-            // GET vehicle data from backend
-           fetch(process.env.REACT_APP_GET_VEHICLE_API)
-           .then(response => {
-               if(!response.ok)
-                   throw new Error("Couldn't find vehicle");
-               return response.json();
-           })
-           .then(calldata => {
-                setVehicles(calldata.data);
-            })
-            .catch(err => {console.error(err)})
+        // GET vehicle data from backend     
+        const getVehicles = async () => {
+            try {
+                const response = await axios.get(getvehicle_url);
+                // Assuming the API response structure has a data property that contains the vehicles
+                setVehicles(response.data.data);
+            } 
+            catch (err) {
+                console.error("Couldn't find vehicle:", err);
+            } 
+            };
+        getVehicles();
     }, [])
 
     // Log maintenance variables
@@ -38,26 +41,23 @@ export default function LogMaintenance() {
             // if there's an odo reading, if odo units chosen, and if date is completely typed
             if(VID.length > 0 && odoReading.length > 0 && odoUnits !== "--select an option--" && date.length === 10)
             {
-                    // log data into db
-                    fetch(process.env.REACT_APP_ADD_LOG_API, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            VID, odoReading, odoUnits, date, desc
-                        }),
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        alert("Maintenance logged")  
-                        console.log("Log data: ", data)                           
-                        window.location.reload();  
-                    })
-                    .catch((error) => {
-                        alert("Error adding data")
-                        console.error("Error: ", error);
-                    });
+                    const addlog_url = process.env.REACT_APP_ADD_LOG_API;
+                    const data = {VID, odoReading, odoUnits, date, desc};
+                    // POST log to backend
+                    axios.post(addlog_url, data)
+                        .then(response => {
+                            console.log(response.data);
+                            alert("Maintenance Logged")
+                            setVID('');
+                            setOdoReading('');
+                            setOdoUnits('');
+                            setDate('');
+                            setDesc('');
+                        })
+                        .catch((error) => {
+                            alert("Error adding data")
+                            console.error("Error: ", error);
+                        });
             }
             else
                 window.alert("Missing an input.")

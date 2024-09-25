@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import PageLogs from './functions/PageLogs';
 import Pagination from './functions/Pagination';
 import PostsPerPage from './functions/PostsPerPage';
@@ -9,7 +10,6 @@ export default function ViewMaintenance() {
     const [vehicleID, setVehicleID] = useState([]);
     // For getting the maintenance logs
     const [logs, setLogs] = useState([]);
-
     const [loading, setLoading] = useState(false);
     // Get current posts per page
     const [currentPage, setCurrentPage] = useState(1);
@@ -24,44 +24,46 @@ export default function ViewMaintenance() {
     };
     
     // GET vehicle data from backend
+    const getvehicle_url = process.env.REACT_APP_GET_VEHICLE_API;
     useEffect(() => {
-        setLoading(true); 
-            fetch(process.env.REACT_APP_GET_VEHICLE_API)
-            .then(response => {
-                if(!response.ok)
-                   throw new Error("Couldn't find vehicle");
-                return response.json();
-            })
-            .then(calldata => {
-                setVehicles(calldata.data);
-            })
-        .catch(err => {console.error(err)})
-        .finally(() => setLoading(false)); 
+        const getVehicles = async () => {
+            setLoading(true); // Start loading state
+            try {
+              const response = await axios.get(getvehicle_url);
+              // Assuming the API response structure has a data property that contains the vehicles
+              setVehicles(response.data.data);
+            } catch (err) {
+              console.error("Couldn't find vehicle:", err);
+            } finally {
+              setLoading(false); // End loading state
+            }
+        };
+        getVehicles();
     }, [])
+    
 
     // Get maintenance logs
+    const getlog_url = `${process.env.REACT_APP_GET_LOG_BY_VEHICLE_ID_API}${vehicleID}`;
     useEffect(() => {
-        const fetchPosts = () => { 
-            setLoading(true);           
-                // GET call to api
-                fetch(`${process.env.REACT_APP_GET_LOG_BY_VEHICLE_ID_API}${vehicleID}`)
-                .then(response => {
-                    if(!response.ok)
-                        throw new Error("Couldn't find logs");
-                    return response.json();
+        const getPosts = async () => {
+            setLoading(true);
+            try{
+                const response = await axios.get(getlog_url);
+                const logs = response.data.data;
+                const filteredData = logs.map(log => {
+                    const { v_id, l_id, odoreading, odounits, date, mdesc } = log;
+                    return { v_id, l_id, odoreading, odounits, date, mdesc };
                 })
-                .then(data => {
-                    const logs = data.data;
-                    const filteredData = logs.map(log => {
-                        const { v_id, l_id, odoreading, odounits, date, mdesc } = log;
-                        return { v_id, l_id, odoreading, odounits, date, mdesc };
-                    })
-                    setLogs(filteredData);
-                })
-                .catch(err => {console.error(err)})
-                .finally(() => setLoading(false));
+                setLogs(filteredData);
+            }  
+            catch (err) {
+                console.error("Couldn't find logs:", err);
             }
-        fetchPosts();
+            finally {
+                setLoading(false); // End loading state
+            }
+        }
+        getPosts();
     }, [vehicleID])
 
 

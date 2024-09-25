@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import PageVehicles from './functions/PageVehicles';
 import Pagination from './functions/Pagination';
 import PostsPerPage from "./functions/PostsPerPage";
@@ -15,20 +16,21 @@ export default function ViewVehicles () {
     const paginate = VehiclesPerPage[1];
 
     // Get vehicle data from backend
+    const getvehicle_url = process.env.REACT_APP_GET_VEHICLE_API;
     useEffect(() => {
-        setLoading(true);
-        fetch(process.env.REACT_APP_GET_VEHICLE_API)
-            .then(response => {
-                if(!response.ok)
-                    throw new Error("Couldn't find vehicle");
-                return response.json();
-            })
-            .then(data => {
-                // Extract the data array from the response object
-                setVehicles(data.data);
-            })
-            .catch(err => console.error(err))
-            .finally(() => {setLoading(false)})
+        const getVehicles = async () => {
+            setLoading(true); // Start loading state
+            try {
+              const response = await axios.get(getvehicle_url);
+              // Assuming the API response structure has a data property that contains the vehicles
+              setVehicles(response.data.data);
+            } catch (err) {
+              console.error("Couldn't find vehicle:", err);
+            } finally {
+              setLoading(false); // End loading state
+            }
+        };
+        getVehicles();
     }, [])
 
     return (

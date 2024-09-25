@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import SideBar from './SideBar';
 import ManageAccountData from './ManagerAccountData';
 import AddVehicle from './AddVehicle';
 import LogMaintenance from './LogMaintenance';
 import ViewMaintenance from './ViewMaintenance';
 import ViewVehicles from './ViewVehicles';
-import { AuthProvider } from './context/AuthProvider';
 
 function PageAfterLogin() {
     let screen;
     // Sidebar web pages
     switch (window.location.pathname){
-      case "/mng-acc-data":
+      case "/":
         screen = <ManageAccountData />
         break;
       case "/add-vehicles":

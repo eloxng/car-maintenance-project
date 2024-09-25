@@ -1,8 +1,8 @@
 import React, {useState} from "react";
+import axios from "axios";
 import { handleYearKeyPress, handleMakeKeyPress, handleModelKeyPress, handleLPKeyPress } from "./functions/InputHandling";
 
 export default function AddVehicle() {
-    //const test = (wan, too, free, foe) => {console.log(wan, too, free, foe)}
     const [year, setYear] = useState('');
     const [make, setMake] = useState('');
     const [model, setModel] = useState('');
@@ -17,24 +17,21 @@ export default function AddVehicle() {
         event.preventDefault(); // Prevent default form submission behavior     
         if ((year.length > 0 && make.length > 0 && model.length > 0 && licensePlate.length > 0)){
             if(window.confirm("Are you sure you want to submit?")){
+                const addvehicle_url = process.env.REACT_APP_ADD_VEHICLE_API;
+                const data = {year, make, model, licensePlate};
                 // POST vehicle data into backend
-                fetch(process.env.REACT_APP_ADD_VEHICLE_API, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        year, make, model, licensePlate
-                    }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Vehicle added:", data);
-                    window.location.reload();                    
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
+                axios.post(addvehicle_url, data)
+                    .then(response => {
+                        console.log(response.data);
+                        setYear('');
+                        setMake('');
+                        setModel('');
+                        setLicensePlate('');
+                        window.location.reload();
+                    })
+                    .catch((err) => {
+                        console.error("Error:", err);
+                    });
             } else {
                 window.alert("You pressed cancel, vehicle not added.");
             }
