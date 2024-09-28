@@ -1,8 +1,6 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import axios from 'axios';
 import AuthContext from "./context/AuthProvider";
-import LoginValidater from "./functions/LoginValidater";
-import PageAfterLogin from "./PageAfterLogin";
 
 const LoginPage = () => {
     // Reference
@@ -37,11 +35,10 @@ const LoginPage = () => {
             // POST request to login api
             axios.post(login_url, data)
                 .then(response => {
-                    setAuth({username, password});
+                    setAuth({username, password}); // Set authorization when user posts valid login details
                     console.log(response.data)
                     setUsername('');
                     setPassword('');
-                    setSuccess(true);
                 })
                 .catch(err => {
                     if(!err.response) {
@@ -59,29 +56,24 @@ const LoginPage = () => {
         }
     }
 
+
     return (
         <>
             {/* {success ? (page to be shown after login) : (login page)} */}
-            {success ? (
-                <PageAfterLogin />
-            ) : ( 
-                <div className="grid items-center justify-center absolute bg-[#cdb087] h-screen w-screen">               
-                    <form className="grid gap-4 text-2xl font-semibold w-fit" onSubmit={SubmitLogin}>
-                    <label className="text-3xl text-white font-bold">Sign into account</label>
-                        <input type="text" id="username" placeholder=" Username" ref={userRef} autoComplete="off" value={username} onChange={HandleUsername} required></input>
-                        <input type="password" id="password" placeholder=" Password" value={password} onChange={HandlePassword} required></input>
-                        <button type="submit" className="text-white font-bold bg-[#a48c6c] ring ring-[##a48c6c] ring-offset-4 rounded-2xl text-3xl hover:shadow hover:bg-blue-500">
-                            Login
-                        </button> 
-                        
-                        <LoginValidater username={username} password={password}></LoginValidater>
-                        <label className='font-bold text-red-500'>
-                            <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
-                        </label>
-                        
-                    </form>       
-                </div>
-            )}
+            <div className="grid items-center justify-center relative bg-[#cdb087] h-screen w-screen">              
+                <form className="grid gap-4 text-2xl font-semibold w-fit" onSubmit={SubmitLogin}>
+                    <label className="text-3xl text-white font-bold">Sign-in</label>
+                    <input className="w-64 h-12 p-2" type="text" id="username" placeholder=" Username" ref={userRef} autoComplete="off" value={username} onChange={HandleUsername} required></input>
+                    <input className="w-64 h-12 p-2" type="password" id="password" placeholder=" Password" value={password} onChange={HandlePassword} required></input>
+                    <button type="submit" className="w-64 h-12 p-2 text-white font-bold bg-[#a48c6c] ring ring-[##a48c6c] ring-offset-4 rounded-2xl text-3xl hover:shadow hover:bg-blue-500">
+                        Login
+                    </button>         
+                </form>
+                <a href="/create-account" className="text-lg flex items-center justify-center text-white">Create an account</a>  
+                <div className="text-lg flex items-center justify-center text-red-500 font-bold">
+                    <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
+                </div>               
+            </div>
         </>
     )
 
