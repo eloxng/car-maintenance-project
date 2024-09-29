@@ -5,7 +5,7 @@ export default function ManageAccountData() {
     // Wipe vehicles and log button
     const wipeVehiclesAndLogs = async () => {
         // Delete maintenance logs
-        const deletelogs_url = process.env.REACT_APP_CLEAR_LOGS_API;
+        const deletelogs_url = '/remove-logs-per-uid';
         const deleteLogs = async () => {
             try {
                 const response = await axios.delete(deletelogs_url);
@@ -16,7 +16,7 @@ export default function ManageAccountData() {
             }
         }
         // Delete vehicle
-        const deletevehicle_url = process.env.REACT_APP_CLEAR_VEHICLES_API;
+        const deletevehicle_url = '/remove-vehicles-per-uid';
         const deleteVehicles = async () => {
             try{
                 const response = await axios.delete(deletevehicle_url);

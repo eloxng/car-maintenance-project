@@ -8,8 +8,8 @@ const SideBar = () => {
   const handleLogout = async () => {
       if(window.confirm("Are you sure you want to logout?")){
         alert("Logging out.")
-
-        axios.post(process.env.REACT_APP_GET_LOGOUT)
+        const logout_url = '/logout';
+        axios.post(logout_url)
           .then(response => {
             console.log('Logging out data: ', response.data)
             logout();
@@ -31,7 +31,7 @@ const SideBar = () => {
       <ul className="mt-3 text-white font-bold h-fit w-fit">
         {/* Add conditional rendering here when accounts database is setup */}
         <li className='mb-2 rounded hover:shadow hover:bg-red-500 py-2'>
-          <a href='/manage-account-data' className="px-3">Manage Account Data</a>
+          <a href='/' className="px-3">Manage Account Data</a>
         </li>
         {/******************************************************************/}
         <li className='mb-2 rounded hover:shadow hover:bg-blue-500 py-2'>

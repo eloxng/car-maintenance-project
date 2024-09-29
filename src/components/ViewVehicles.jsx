@@ -16,7 +16,7 @@ export default function ViewVehicles () {
     const paginate = VehiclesPerPage[1];
 
     // Get vehicle data from backend
-    const getvehicle_url = process.env.REACT_APP_GET_VEHICLE_API;
+    const getvehicle_url = '/get-vehicles';
     useEffect(() => {
         const getVehicles = async () => {
             setLoading(true); // Start loading state

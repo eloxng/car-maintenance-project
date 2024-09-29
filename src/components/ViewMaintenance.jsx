@@ -24,7 +24,7 @@ export default function ViewMaintenance() {
     };
     
     // GET vehicle data from backend
-    const getvehicle_url = process.env.REACT_APP_GET_VEHICLE_API;
+    const getvehicle_url = '/get-vehicles';
     useEffect(() => {
         const getVehicles = async () => {
             setLoading(true); // Start loading state
@@ -43,7 +43,7 @@ export default function ViewMaintenance() {
     
 
     // Get maintenance logs
-    const getlog_url = `${process.env.REACT_APP_GET_LOG_BY_VEHICLE_ID_API}${vehicleID}`;
+    const getlog_url = `/get-logs-by-id/${vehicleID}`;
     useEffect(() => {
         const getPosts = async () => {
             setLoading(true);

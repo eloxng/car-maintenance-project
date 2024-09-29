@@ -17,7 +17,7 @@ export default function AddVehicle() {
         event.preventDefault(); // Prevent default form submission behavior     
         if ((year.length > 0 && make.length > 0 && model.length > 0 && licensePlate.length > 0)){
             if(window.confirm("Are you sure you want to submit?")){
-                const addvehicle_url = process.env.REACT_APP_ADD_VEHICLE_API;
+                const addvehicle_url = '/add-vehicles';
                 const data = {year, make, model, licensePlate};
                 // POST vehicle data into backend
                 axios.post(addvehicle_url, data)

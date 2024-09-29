@@ -5,7 +5,7 @@ import { handleDescKeyPress, handleDateKeyPress, handleOdoReadingKeyPress } from
 export default function LogMaintenance() {
     // For select car dropdown
     const [vehicles, setVehicles] = useState([]); 
-    const getvehicle_url = process.env.REACT_APP_GET_VEHICLE_API;
+    const getvehicle_url = '/get-vehicles';
     useEffect(() => {
         // GET vehicle data from backend     
         const getVehicles = async () => {
@@ -41,7 +41,7 @@ export default function LogMaintenance() {
             // if there's an odo reading, if odo units chosen, and if date is completely typed
             if(VID.length > 0 && odoReading.length > 0 && odoUnits !== "--select an option--" && date.length === 10)
             {
-                    const addlog_url = process.env.REACT_APP_ADD_LOG_API;
+                    const addlog_url = '/add-log';
                     const data = {VID, odoReading, odoUnits, date, desc};
                     // POST log to backend
                     axios.post(addlog_url, data)

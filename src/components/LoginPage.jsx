@@ -30,7 +30,7 @@ const LoginPage = () => {
     const SubmitLogin = async (event) => {
         event.preventDefault(); 
         if(username.length > 0 && password.length > 0){
-            const login_url = process.env.REACT_APP_GET_LOGIN;
+            const login_url = '/login';
             const data = {username, password}
             // POST request to login api
             axios.post(login_url, data)
@@ -69,7 +69,7 @@ const LoginPage = () => {
                         Login
                     </button>         
                 </form>
-                <a href="/create-account" className="text-lg flex items-center justify-center text-white">Create an account</a>  
+                <a href="/create-account" className="text-lg flex items-center justify-center text-white font-bold bg-[#a48c6c] ring ring-[##a48c6c] hover:shadow ring-offset-4 rounded-2xl text-3xl hover:bg-blue-500">Create an account</a>  
                 <div className="text-lg flex items-center justify-center text-red-500 font-bold">
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
                 </div>               

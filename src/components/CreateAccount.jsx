@@ -22,7 +22,7 @@ export default function CreateAccount(){
         event.preventDefault();
 
         if(password === confPassword){
-            const createaccount_url = process.env.REACT_APP_CREATE_ACCOUNT;
+            const createaccount_url = '/create-account';
             const data = {username, password, confPassword}
 
             axios.post(createaccount_url, data)

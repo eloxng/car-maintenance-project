@@ -10,7 +10,7 @@ function PageAfterLogin() {
     let screen;
     // Sidebar web pages
     switch (window.location.pathname){
-      case "/manage-account-data":
+      case "/":
         screen = <ManageAccountData />
         break;
       case "/add-vehicles":
