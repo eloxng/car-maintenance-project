@@ -15,6 +15,7 @@ cmpdbOG.db
 create-tables.txt
 desktop.ini
 response.json())
+package-lock.json
 
 # misc
 .DS_Store
