@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import PageBeforeLogin from './components/PageBeforeLogin';
-import PageAfterLogin from './components/PageAfterLogin';
+import PageBeforeLogin from './components/pages/PageBeforeLogin';
+import PageAfterLogin from './components/pages/PageAfterLogin';
 import AuthContext from './components/context/AuthProvider';
 
 function App() {

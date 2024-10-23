@@ -68,7 +68,7 @@ export default function ViewMaintenance() {
 
 
     return (
-        <div className="absolute bg-[#cdb087] px-4 py-2 ml-64 h-screen w-screen">
+        <>
             <div className="text-3xl text-white font-bold"> 
                 View Maintenance Log Page
             </div>
@@ -95,6 +95,6 @@ export default function ViewMaintenance() {
                 <br></br>
                 <Pagination postsPerPage={postsPerPage} totalPosts={logs.length} paginate={paginater}></Pagination>
             </div>              
-        </div>
+        </>
     )
 }

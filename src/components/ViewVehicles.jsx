@@ -34,7 +34,7 @@ export default function ViewVehicles () {
     }, [])
 
     return (
-        <div className="relative bg-[#cdb087] px-4 py-2 ml-64 h-screen w-screen">
+        <>
             <div className="text-3xl text-white font-bold"> 
                 View Vehicles
             </div>
@@ -46,6 +46,6 @@ export default function ViewVehicles () {
                 <br></br>
                 <Pagination postsPerPage={postsPerPage} totalPosts={vehicles.length} paginate={paginate}></Pagination>
             </div>
-        </div>
+        </>
     )
 }

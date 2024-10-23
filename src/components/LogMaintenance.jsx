@@ -69,7 +69,7 @@ export default function LogMaintenance() {
 
 
     return (
-        <div className="absolute bg-[#cdb087] px-4 py-2 ml-64 h-screen w-screen">
+        <>
             <div className="text-3xl text-white font-bold"> 
                 Log Maintenance Page
             </div>
@@ -105,6 +105,6 @@ export default function LogMaintenance() {
                     <label className="">Log Maintenance</label>
                 </button>    
             </form>
-        </div>
+        </>
     )
 }

@@ -1,9 +1,11 @@
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthContext from "./context/AuthProvider";
 import axios from "axios";
 
 const SideBar = () => {
   const { logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
       if(window.confirm("Are you sure you want to logout?")){
@@ -13,6 +15,7 @@ const SideBar = () => {
           .then(response => {
             console.log('Logging out data: ', response.data)
             logout();
+            navigate('/');
           })
           .catch(error => {
             console.log(error);
@@ -33,21 +36,14 @@ const SideBar = () => {
         <li className='mb-2 rounded hover:shadow hover:bg-red-500 py-2'>
           <a href='/' className="px-3">Manage Account Data</a>
         </li>
-        {/******************************************************************/}
         <li className='mb-2 rounded hover:shadow hover:bg-blue-500 py-2'>
-          <a href='/add-vehicles' className="px-3">Add Vehicles</a>
+          <a href='/manage-vehicles' className="px-3">Manage Vehicles</a>
         </li>
         <li className='mb-2 rounded hover:shadow hover:bg-blue-500 py-2'>
-          <a href='/view-vehicles' className="px-3">View Vehicles</a>
-        </li>
-        <li className='mb-2 rounded hover:shadow hover:bg-blue-500 py-2'>
-          <a href='/log-maintenance' className="px-3">Log Maintenance</a>
-        </li>
-        <li className='mb-2 rounded hover:shadow hover:bg-blue-500 py-2'>
-          <a href='/view-maintenance-log' className="px-3">View Maintenance Log</a>
+          <a href='/manage-maintenance-logs' className="px-3">Manage Maintenance Logs</a>
         </li>
         <button className='mb-2 rounded hover:shadow hover:bg-red-900 py-2'>
-          <a onClick={handleLogout} className="logout-button px-3">Log out of account</a>
+          <a onClick={handleLogout} className="logout-button px-3">Logout</a>
         </button>
       </ul>
     </div>
