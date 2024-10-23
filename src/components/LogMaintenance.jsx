@@ -1,26 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { handleDescKeyPress, handleDateKeyPress, handleOdoReadingKeyPress } from "./functions/InputHandling";
 
-export default function LogMaintenance() {
-    // For select car dropdown
-    const [vehicles, setVehicles] = useState([]); 
-    const getvehicle_url = '/get-vehicles';
-    useEffect(() => {
-        // GET vehicle data from backend     
-        const getVehicles = async () => {
-            try {
-                const response = await axios.get(getvehicle_url);
-                // Assuming the API response structure has a data property that contains the vehicles
-                setVehicles(response.data.data);
-            } 
-            catch (err) {
-                console.error("Couldn't find vehicle:", err);
-            } 
-            };
-        getVehicles();
-    }, [])
-
+export default function LogMaintenance({vehicles, getPosts}) {
     // Log maintenance variables
     const [VID, setVID] = useState('');
     const [odoReading, setOdoReading] = useState('');
@@ -48,11 +30,14 @@ export default function LogMaintenance() {
                         .then(response => {
                             console.log(response.data);
                             alert("Maintenance Logged")
+                            // Clear inputs
                             setVID('');
                             setOdoReading('');
                             setOdoUnits('');
                             setDate('');
                             setDesc('');
+                            // Update maintenance logs list without reloading page
+                            getPosts();
                         })
                         .catch((error) => {
                             alert("Error adding data")
@@ -71,7 +56,7 @@ export default function LogMaintenance() {
     return (
         <>
             <div className="text-3xl text-white font-bold"> 
-                Log Maintenance Page
+                Log Maintenance
             </div>
             <br></br>
             <br></br>

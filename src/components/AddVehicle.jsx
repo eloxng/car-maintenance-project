@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import axios from "axios";
 import { handleYearKeyPress, handleMakeKeyPress, handleModelKeyPress, handleLPKeyPress } from "./functions/InputHandling";
 
-export default function AddVehicle() {
+export default function AddVehicle({getVehicles}) {
     const [year, setYear] = useState('');
     const [make, setMake] = useState('');
     const [model, setModel] = useState('');
@@ -23,11 +23,13 @@ export default function AddVehicle() {
                 axios.post(addvehicle_url, data)
                     .then(response => {
                         console.log(response.data);
+                        // Clear inputs
                         setYear('');
                         setMake('');
                         setModel('');
                         setLicensePlate('');
-                        window.location.reload();
+                        // Update vehicles without having to reload page
+                        getVehicles();
                     })
                     .catch((err) => {
                         console.error("Error:", err);

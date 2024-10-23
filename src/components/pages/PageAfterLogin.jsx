@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import SideBar from '../SideBar';
-import ManageAccountData from '../ManagerAccountData';
+import ManageAccountData from './ManagerAccountData';
 import ManageVehicles from './ManageVehicles'
 import ManageLogs from './ManageLogs'
 

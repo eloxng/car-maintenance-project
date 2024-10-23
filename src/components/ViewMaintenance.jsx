@@ -1,76 +1,28 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import PageLogs from './functions/PageLogs';
 import Pagination from './functions/Pagination';
 import PostsPerPage from './functions/PostsPerPage';
 
-export default function ViewMaintenance() {
-    // For getting vehicles from db and setting their ID's
-    const [vehicles, setVehicles] = useState([]);
-    const [vehicleID, setVehicleID] = useState([]);
-    // For getting the maintenance logs
-    const [logs, setLogs] = useState([]);
-    const [loading, setLoading] = useState(false);
-    // Get current posts per page
+export default function ViewMaintenance({vehicles, vehicleID, setVehicleID, loading, logs, getPosts}) {
+    // For paginating maintenance logs
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage] = useState(6);
-    // Set vehicle ID for const vehicleID
     const LogsPerPage = PostsPerPage(logs, currentPage, setCurrentPage, postsPerPage);
     const currentLogs = LogsPerPage[0];
     const paginater = LogsPerPage[1];
-    // Handle vehicle selection
-    const handleVehicleChange = (e) => {
-        setVehicleID(e.target.value);
-    };
-    
-    // GET vehicle data from backend
-    const getvehicle_url = '/get-vehicles';
-    useEffect(() => {
-        const getVehicles = async () => {
-            setLoading(true); // Start loading state
-            try {
-              const response = await axios.get(getvehicle_url);
-              // Assuming the API response structure has a data property that contains the vehicles
-              setVehicles(response.data.data);
-            } catch (err) {
-              console.error("Couldn't find vehicle:", err);
-            } finally {
-              setLoading(false); // End loading state
-            }
-        };
-        getVehicles();
-    }, [])
-    
 
-    // Get maintenance logs
-    const getlog_url = `/get-logs-by-id/${vehicleID}`;
+    // Handle vehicle selection
+    const handleVehicleChange = (e) => {setVehicleID(e.target.value); };
+    
+    // Render maintenance logs by vehicle ID in the dropdown
     useEffect(() => {
-        const getPosts = async () => {
-            setLoading(true);
-            try{
-                const response = await axios.get(getlog_url);
-                const logs = response.data.data;
-                const filteredData = logs.map(log => {
-                    const { v_id, l_id, odoreading, odounits, date, mdesc } = log;
-                    return { v_id, l_id, odoreading, odounits, date, mdesc };
-                })
-                setLogs(filteredData);
-            }  
-            catch (err) {
-                console.error("Couldn't find logs:", err);
-            }
-            finally {
-                setLoading(false); // End loading state
-            }
-        }
         getPosts();
     }, [vehicleID])
-
 
     return (
         <>
             <div className="text-3xl text-white font-bold"> 
-                View Maintenance Log Page
+                View Maintenance Logs
             </div>
             <br></br>
             <br></br>
