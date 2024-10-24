@@ -63,16 +63,39 @@ export default function ManageLogs(){
         getVehicles();
     }, [])
 
+    // Render maintenance logs by vehicle ID in the dropdown
+    useEffect(() => {
+        getPosts();
+    }, [vehicleID])
+
+    /* 
+        Moved drop down so that only one is 
+        needed to control both the viewing 
+        maintenance logs and logging maintenance
+    */
+    // Handle vehicle selection
+    const handleVehicleChange = (e) => {setVehicleID(e.target.value); };
+
     return(
         <div className="absolute bg-[#cdb087] px-4 py-2 ml-64 h-screen w-screen">
+            {/*onChange*/}
+            <div className="grid grid-cols-2 text-2xl text-white font-semibold w-fit">
+                <label className="text-3xl font-bold">Select Car: </label>             
+                <select id="car" className="bg-[#a48c6c]" onChange={handleVehicleChange}>
+                    <option disabled selected value>-- select an option --</option>
+                    {vehicles.map((vehicle) => (
+                        <option key={vehicle.v_id} value={vehicle.v_id}>
+                            {vehicle.v_id}: {vehicle.year} {vehicle.make} {vehicle.model} - <strong>{vehicle.lplate}</strong>
+                        </option>
+                    ))}
+                </select>
+            </div>
             {/* ViewMaintenance */}
-            <ViewMaintenance vehicles={vehicles} 
-            vehicleID={vehicleID} setVehicleID={setVehicleID}
-            loading={loading} 
-            logs={logs} getPosts={getPosts}></ViewMaintenance>
+            <ViewMaintenance 
+            loading={loading} logs={logs}></ViewMaintenance>
 
             {/* LogMaintenance */}
-            <LogMaintenance vehicles={vehicles} getPosts={getPosts}></LogMaintenance>
+            <LogMaintenance vehicleID={vehicleID} getPosts={getPosts}></LogMaintenance>
         </div>
     )
 }
