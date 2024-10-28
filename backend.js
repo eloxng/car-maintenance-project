@@ -56,14 +56,27 @@ app.post('/create-account', (req, res) => {
     if (!username || !password || !confPassword) 
         return res.status(401).json({ error: 'All inputs needed for account creation' });
 
-    const query = `INSERT INTO users (username, password) VALUES (?, ?);`
-    db.run(query, [username, confPassword], 
-        (err) => {
-            if(err) 
-                return res.status(400).json({message: "User not added", error: err.message});
-            else
-                return res.status(200).json({message: `User ${username} with password ${confPassword} inserted!`});
-    })
+    // Check if the passwords match
+    if (password !== confPassword) 
+        return res.status(400).json({ error: 'Passwords do not match' });
+    
+    // Check if the username already exists
+    const checkQuery = `SELECT username FROM users WHERE username = ?`;
+    db.get(checkQuery, [username], (err, row) => {
+        if (err) 
+            return res.status(500).json({ error: 'Database error', details: err.message });
+        if (row) 
+            return res.status(403).json({ message: 'Username is already taken.' });
+
+        // If the username is available, proceed to insert
+        const insertQuery = `INSERT INTO users (username, password) VALUES (?, ?)`;
+        db.run(insertQuery, [username, password], (err) => {
+            if (err) {
+                return res.status(500).json({ error: 'Database error', details: err.message });
+            }
+            return res.status(201).json({ message: `User ${username} created successfully!` });
+        });
+    });
 })
 
 // Get all Vehicles

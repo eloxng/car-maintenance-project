@@ -1,7 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function CreateAccount(){
+    const navigate = useNavigate();
+
     // Get username and password from inputs
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -27,23 +30,18 @@ export default function CreateAccount(){
 
             axios.post(createaccount_url, data)
                 .then(response => {
-                    console.log("Account created frontend: ", username, password, confPassword)
                     console.log(response.data)
                     setUsername('');
                     setPassword('');
                     setConfPassword('');
+                    navigate('/');
                 })
                 .catch(err => {
-                    if(!err.response) {
+                    if(!err.response) 
                         setErrMsg('No server response')
-                    } else if (err.response?.status === 400){
-                        setErrMsg('Missing username or password')
-                    } else if (err.response?.status === 401){
-                        setErrMsg('Error: Not a valid account')
-                        console.error(err)
-                    } else{
-                        setErrMsg('Login Failed')
-                    }
+                    else
+                        setErrMsg(JSON.stringify(err.response.data.message))
+                    
                     errRef.current.focus();
                 })
         }

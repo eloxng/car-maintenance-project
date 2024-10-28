@@ -2,27 +2,40 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "./context/AuthProvider";
 import axios from "axios";
+import {useToast} from './context/Toast'
 
 const SideBar = () => {
   const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  const showToast = useToast();
 
   const handleLogout = async () => {
-      if(window.confirm("Are you sure you want to logout?")){
-        alert("Logging out.")
-        const logout_url = '/logout';
-        axios.post(logout_url)
-          .then(response => {
-            console.log('Logging out data: ', response.data)
-            logout();
-            navigate('/');
-          })
-          .catch(error => {
-            console.log(error);
-          })
-      }
-      else
-        alert("Cancelled Logout.")
+    const logout_url = '/logout';
+    axios.post(logout_url)
+      .then(response => {
+        showToast("Logging out", "info");
+        console.log('Logging out data: ', response.data)
+        logout();
+        navigate('/');
+      })
+      .catch(error => {
+        showToast("Error logging out", "error");
+        console.log(error);
+      })
+  }
+
+  const handleLogoutToast = () => {
+    showToast(
+      <>
+        <label className="text-white font-bold">Are you sure you want to log out?</label>
+        <br></br>
+        <br></br>  
+          <div className="grid grid-cols-2 font-semibold">
+            <button className="mb-2 rounded hover:shadow hover:bg-red-900 py-2" onClick={handleLogout}>Confirm</button>
+            <button className="mb-2 rounded hover:shadow hover:bg-red-900 py-2" onClick={() => showToast("Canceled logout.", "error")}>Cancel</button>
+          </div>
+      </>, "info"
+    )
   }
 
   return (
@@ -43,7 +56,7 @@ const SideBar = () => {
           <a href='/manage-maintenance-logs' className="px-3">Manage Maintenance Logs</a>
         </li>
         <button className='mb-2 rounded hover:shadow hover:bg-red-900 py-2'>
-          <a onClick={handleLogout} className="logout-button px-3">Logout</a>
+          <a onClick={handleLogoutToast} className="logout-button px-3">Logout</a>
         </button>
       </ul>
     </div>
