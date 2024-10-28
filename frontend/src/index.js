@@ -9,11 +9,11 @@ import { ToastProvider } from './components/context/Toast';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ToastProvider>
-      <AuthProvider>
+    <AuthProvider>
+      <ToastProvider>
         <App />
-      </AuthProvider>
-    </ToastProvider>
+      </ToastProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
 

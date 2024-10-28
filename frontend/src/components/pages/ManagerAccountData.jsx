@@ -1,7 +1,10 @@
 import React from "react";
 import axios from "axios";
+import { useToast } from "../context/Toast";
 
 export default function ManageAccountData() {
+    const showToast = useToast();
+
     // Wipe vehicles and log button
     const wipeVehiclesAndLogs = async () => {
         // Delete maintenance logs
@@ -27,13 +30,24 @@ export default function ManageAccountData() {
             }
         }
 
-        if(window.confirm("Are you sure you want to wipe your vehicles and maintenance logs?")){
-            deleteLogs();
-            deleteVehicles();
-            window.alert("Wiped.")
-        }
-        else
-            window.alert("Canceled wipe.")
+        // Delete functions
+        deleteLogs();
+        deleteVehicles();
+        showToast("Wiped all vehicle and maintenance data.", "success");
+    }
+
+    const handleWipeConfirm = () => {
+        showToast(
+            <>
+              <label className="text-white font-bold">Wipe all vehicle and maintenance data?</label>
+              <br></br>
+              <br></br>  
+                <div className="grid grid-cols-2 font-semibold">
+                  <button className="mb-2 rounded hover:shadow hover:bg-red-900 py-2" onClick={wipeVehiclesAndLogs}>Confirm</button>
+                  <button className="mb-2 rounded hover:shadow hover:bg-red-900 py-2" onClick={() => showToast("Canceled wiping data.", "error")}>Cancel</button>
+                </div>
+            </>, "info"
+        )
     }
 
     return (
@@ -44,17 +58,13 @@ export default function ManageAccountData() {
             <br></br>
             <br></br>
 
-            <ul className="grid grid-cols-3 gap-10 w-fit h-fit"> 
-                {/* Reset password function */}
-                <li className="rounded-lg hover:bg-green-500">
-                    <a className="flex items-center justify-center text text-white text-2xl font-bold">Reset username</a>
-                </li>
+            <ul className="grid grid-cols-2 gap-10 w-fit h-fit"> 
                 {/* Reset password function */}
                 <li className="rounded-lg hover:bg-green-500">
                     <a className="flex items-center justify-center text text-white text-2xl font-bold">Reset Password</a>
                 </li>
                 {/* Wipe vehicles and logs function */}
-                <li onClick={wipeVehiclesAndLogs} className="rounded-lg hover:bg-red-700">
+                <li onClick={handleWipeConfirm} className="rounded-lg hover:bg-red-700">
                     <a className="flex items-center justify-center text text-white text-2xl font-bold">Wipe All Vehicle and Log Data</a>
                 </li >
             </ul>

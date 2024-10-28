@@ -36,7 +36,6 @@ const LoginPage = () => {
             axios.post(login_url, data)
                 .then(response => {
                     setAuth({username, password}); // Set authorization when user posts valid login details
-                    console.log(response.data)
                     setUsername('');
                     setPassword('');
                 })

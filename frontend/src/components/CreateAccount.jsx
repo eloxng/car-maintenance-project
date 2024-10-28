@@ -1,9 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "./context/Toast";
 import axios from "axios";
 
 export default function CreateAccount(){
     const navigate = useNavigate();
+    const showToast = useToast();
 
     // Get username and password from inputs
     const [username, setUsername] = useState('');
@@ -30,10 +32,12 @@ export default function CreateAccount(){
 
             axios.post(createaccount_url, data)
                 .then(response => {
-                    console.log(response.data)
+                    // Clear inputs
                     setUsername('');
                     setPassword('');
                     setConfPassword('');
+                    // Return to login page
+                    showToast('Create account is successful.', "success")
                     navigate('/');
                 })
                 .catch(err => {

@@ -25,7 +25,7 @@ export const ToastProvider = ({ children }) => {
 		// Remove the toast after 3 seconds
 		setTimeout(() => {
 		setToasts((prev) => prev.filter((toast) => toast.id !== id));
-		}, 3000);
+		}, 5000);
 	};
 
 	return (

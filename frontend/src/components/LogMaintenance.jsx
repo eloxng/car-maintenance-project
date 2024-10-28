@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { handleDescKeyPress, handleDateKeyPress, handleOdoReadingKeyPress } from "./functions/InputHandling";
+import { useToast } from "./context/Toast";
 
 export default function LogMaintenance({vehicleID, getPosts}) {
+    const showToast = useToast();
+
     // Log maintenance variables
     const [VID, setVID] = useState('');
     const [odoReading, setOdoReading] = useState('');
@@ -22,45 +25,53 @@ export default function LogMaintenance({vehicleID, getPosts}) {
     const HandleDate = (event) => {setDate(event.target.value);}
     const HandleDesc = (event) => {setDesc(event.target.value);}
 
-    const SubmitLog = (event) => {
-        event.preventDefault()
-        if(window.confirm("Are you sure you want to submit?")){
-            // if there's an odo reading, if odo units chosen, and if date is completely typed
-            if(VID !== '' && odoReading.length > 0 && odoUnits !== "" && date.length === 10)
-            {
-                    const addlog_url = '/add-log';
-                    const data = {VID, odoReading, odoUnits, date, desc};
-                    // POST log to backend
-                    axios.post(addlog_url, data)
-                        .then(response => {
-                            console.log(response.data);
-                            alert("Maintenance Logged");
-                            /* 
-                                Do not clear VID because 
-                                drop down values doesn't 
-                                change after submission
-                            */
-                            // Clear inputs
-                            setOdoReading('');
-                            setOdoUnits('');
-                            setDate('');
-                            setDesc('');
-                            // Update maintenance logs list without reloading page
-                            getPosts();
-                        })
-                        .catch((error) => {
-                            alert("Error adding data")
-                            console.error("Error: ", error);
-                        });
+    const SubmitLog = () => {
+        // if there's an odo reading, if odo units chosen, and if date is completely typed
+        if(VID !== '' && odoReading.length > 0 && odoUnits !== "" && date.length === 10) {
+            const addlog_url = '/add-log';
+            const data = {VID, odoReading, odoUnits, date, desc};
+            // POST log to backend
+            axios.post(addlog_url, data)
+                .then(response => {
+                    console.log(response.data);
+                    showToast("Maintenance Logged", "success");
+                    /* 
+                        Do not clear VID because 
+                        drop down values doesn't 
+                        change after submission
+                    */
+                    // Clear inputs
+                    setOdoReading('');
+                    setOdoUnits('');
+                    setDate('');
+                    setDesc('');
+                    // Update maintenance logs list without reloading page
+                    getPosts();
+                })
+                .catch((error) => {
+                    console.log(error)
+                    showToast("Error adding the maintenance log", "error")
+                });
             }
             else
-                window.alert("Missing an input.")
-        }
-        else{
-            window.alert("Maintenance not logged.")
-        }
+                showToast("Missing a form field.", "error")
     }   
 
+    // Confirmation toast
+    const handleLogMaintenanceToast = (event) => {
+        event.preventDefault()
+        showToast(
+          <>
+            <label className="text-white font-bold">Submit maintenance log?</label>
+            <br></br>
+            <br></br>  
+              <div className="grid grid-cols-2 font-semibold">
+                <button className="mb-2 rounded hover:shadow hover:bg-red-900 py-2" onClick={SubmitLog}>Confirm</button>
+                <button className="mb-2 rounded hover:shadow hover:bg-red-900 py-2" onClick={() => showToast("Canceled log submission.", "error")}>Cancel</button>
+              </div>
+          </>, "info"
+        )
+    }
 
     return (
         <>
@@ -68,7 +79,7 @@ export default function LogMaintenance({vehicleID, getPosts}) {
                 Log Maintenance
             </div>
 
-            <form className="grid grid-cols-2 gap-4 text-white text-2xl font-semibold w-fit" onSubmit={SubmitLog}>
+            <form className="grid grid-cols-2 gap-4 text-white text-2xl font-semibold w-fit" onSubmit={handleLogMaintenanceToast}>
                 <label className="relative bg-[#cdb087] text-white">Odometer Reading: </label>
                 <input id="odoreading" value={odoReading} onChange={HandleOdoReading} type="text" className="text-black" onKeyPress={handleOdoReadingKeyPress}></input>
 

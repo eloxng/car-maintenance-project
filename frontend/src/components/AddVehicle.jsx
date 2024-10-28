@@ -1,8 +1,11 @@
 import React, {useState} from "react";
 import axios from "axios";
 import { handleYearKeyPress, handleMakeKeyPress, handleModelKeyPress, handleLPKeyPress } from "./functions/InputHandling";
+import { useToast } from "./context/Toast";
 
 export default function AddVehicle({getVehicles}) {
+    const showToast = useToast();
+
     const [year, setYear] = useState('');
     const [make, setMake] = useState('');
     const [model, setModel] = useState('');
@@ -16,28 +19,27 @@ export default function AddVehicle({getVehicles}) {
     const SubmitVehicle = (event) => { 
         event.preventDefault(); // Prevent default form submission behavior     
         if ((year.length > 0 && make.length > 0 && model.length > 0 && licensePlate.length > 0)){
-            if(window.confirm("Are you sure you want to submit?")){
-                const addvehicle_url = '/add-vehicles';
-                const data = {year, make, model, licensePlate};
-                // POST vehicle data into backend
-                axios.post(addvehicle_url, data)
-                    .then(response => {
-                        console.log(response.data);
-                        // Clear inputs
-                        setYear('');
-                        setMake('');
-                        setModel('');
-                        setLicensePlate('');
-                        // Update vehicles without having to reload page
-                        getVehicles();
-                    })
-                    .catch((err) => {
-                        console.error("Error:", err);
-                    });
-            } else {
-                window.alert("You pressed cancel, vehicle not added.");
-            }
-        } else {
+            const addvehicle_url = '/add-vehicles';
+            const data = {year, make, model, licensePlate};
+            showToast("Adding vehicle to the list.", "success")
+            // POST vehicle data into backend
+            axios.post(addvehicle_url, data)
+                .then(response => {
+                    console.log(response.data);
+                    // Clear inputs
+                    setYear('');
+                    setMake('');
+                    setModel('');
+                    setLicensePlate('');
+                    // Update vehicles without having to reload page
+                    getVehicles();
+                })
+                .catch((err) => {
+                    showToast("Error adding vehicle to the list.", "error")
+                    console.error("Error:", err);
+                });
+        } 
+        else {
             window.alert("Missing input value(s).");
         }
     }
